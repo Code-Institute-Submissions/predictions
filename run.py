@@ -67,4 +67,8 @@ print(loanDataset['Self_Employed'].value_counts())
 
 print("Training SVM, please wait")
 trainingData = loanDataset.drop(columns=['Loan_ID', 'Loan_Status'], axis=1) #axis equal 1 removes the entire column
-inferenceData = loanDataset['Loan_Status']
+inferenceData = loanDataset['Loan_Status'] 
+
+classifier = svm.SVC(kernel='linear')
+print(loanDataset.head())
+classifier.fit(trainingData.values, inferenceData.values) # train the model
