@@ -64,3 +64,7 @@ class SelfEmployed(IntEnum):
 loanDataset.replace({'Self_Employed': {'No': SelfEmployed.SELF_EMPLOYED.value, 'Yes': SelfEmployed.SELF_EMPLOYED.value}}, inplace=True)
 print(loanDataset.head())
 print(loanDataset['Self_Employed'].value_counts())
+
+print("Training SVM, please wait")
+trainingData = loanDataset.drop(columns=['Loan_ID', 'Loan_Status'], axis=1) #axis equal 1 removes the entire column
+inferenceData = loanDataset['Loan_Status']
