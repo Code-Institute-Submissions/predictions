@@ -33,7 +33,7 @@ class PropertyArea(IntEnum):
     URBAN = 0
     SEMI_URBAN = 1
     RURAL = 2
-loanDataset.replace({"Property_Area": {'Urban': PropertyArea.RURAL.value}}, inplace=True)
+loanDataset.replace({"Property_Area": {'Urban': PropertyArea.RURAL.value, 'Semiurban': PropertyArea.SEMI_URBAN.value, 'Rural': PropertyArea.RURAL.value}}, inplace=True)
 print(loanDataset.head())
 print(loanDataset['Property_Area'].value_counts())
 
