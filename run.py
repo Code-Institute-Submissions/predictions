@@ -76,7 +76,7 @@ classifier.fit(trainingData.values, inferenceData.values) # train the model
 print("Training complete")
 
 while True:
-    os.system('cls')
+    os.system('clear')
     print("1. Customer gender \n\t {} {} \n\t {} {}".format(Gender.MALE.value, 'Male', Gender.FEMALE.value, 'Female'))
     qn_gender = int(input('Answer:  '))
 
@@ -112,7 +112,7 @@ while True:
     print("10. Credit score (1.0 - 0.0)?")
     qn_creditHistory = float(input('Answer: '))
 
-    print("11. Where does the applicant leave? \n\t {} {} \n\t {} {}".format(PropertyArea.URBAN.value, 'Urban', PropertyArea.SEMI_URBAN.value, 'Semi Urban',
+    print("11. Where does the applicant leave? \n\t {} {} \n\t {} {} \n\t {} {}".format(PropertyArea.URBAN.value, 'Urban', PropertyArea.SEMI_URBAN.value, 'Semi Urban',
         PropertyArea.RURAL.value, 'Rural'))
     qn_propertyArea = int(input('Answer: '))
 
@@ -121,9 +121,7 @@ while True:
     prediction = classifier.predict([inputData])
     if(prediction[0] == LoanStatus.ACCEPTED.value):
         print('Customer is eligible to take this loan')
-        out = input('type q to exit the loop: ')
-        if out == 'q':
-            break
+        
 
     else:
         print('Sorry, customer is not eligible to take this loan')
