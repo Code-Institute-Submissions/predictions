@@ -1,75 +1,89 @@
 from enum import IntEnum
-import pandas, os
+import pandas
+import os
 from sklearn import svm
 
 # Data loading
 print("Welcome to lender assistant")
 print("Loading history data")
 loanDataset = pandas.read_csv('loan_dataset.csv')
-#print(loanDataset.head())
+# print(loanDataset.head())
 
 print("Preprocessing data")
 # Drops rows with missing values from the dataset
 loanDataset = loanDataset.dropna()
 
 # using Intenum to replace Strings with integer values
+
+
 class LoanStatus(IntEnum):
     REJECTED = 0
     ACCEPTED = 1
-loanDataset.replace({"Loan_Status": {'N': LoanStatus.REJECTED.value, 'Y': LoanStatus.ACCEPTED.value}}, inplace=True)
-#print(loanDataset.head())
-#print(loanDataset['Loan_Status'].value_counts())
+loanDataset.replace({"Loan_Status": {'N': LoanStatus.REJECTED.value,
+                     'Y': LoanStatus.ACCEPTED.value}}, inplace=True)
+# print(loanDataset.head())
+# print(loanDataset['Loan_Status'].value_counts())
+
 
 class Dependents(IntEnum):
     ZERO = 0
     ONE = 1
     TWO = 2
     MANY = 3
-loanDataset.replace({"Dependents": {'3+': Dependents.MANY.value}}, inplace=True)
-#print(loanDataset.head())
-#print(loanDataset['Dependents'].value_counts())
+loanDataset.replace({"Dependents": {'3+': Dependents.MANY.value}},
+                     inplace=True)
+# print(loanDataset.head())
+# print(loanDataset['Dependents'].value_counts())
+
 
 class PropertyArea(IntEnum):
     URBAN = 0
     SEMI_URBAN = 1
     RURAL = 2
-loanDataset.replace({"Property_Area": {'Urban': PropertyArea.RURAL.value, 'Semiurban': PropertyArea.SEMI_URBAN.value, 'Rural': PropertyArea.RURAL.value}}, inplace=True)
-#print(loanDataset.head())
-#print(loanDataset['Property_Area'].value_counts())
+loanDataset.replace({"Property_Area": {'Urban': PropertyArea.URBAN.value,
+                        'Semiurban': PropertyArea.SEMI_URBAN.value,
+                        'Rural': PropertyArea.RURAL.value}}, inplace=True)
+# print(loanDataset.head())
+# print(loanDataset['Property_Area'].value_counts())
+
 
 class Gender(IntEnum):
     MALE = 0
     FEMALE = 1
 loanDataset.replace({"Gender": {'Male': Gender.MALE.value, 'Female': Gender.FEMALE.value}}, inplace=True)
-#print(loanDataset.head())
-#print(loanDataset['Gender'].value_counts())
+# print(loanDataset.head())
+# print(loanDataset['Gender'].value_counts())
+
 
 class Education(IntEnum):
     GRADUATE = 1
     NOT_GRADUATE = 0
 loanDataset.replace({"Education": {'Graduate': Education.GRADUATE.value,'Not Graduate': Education.NOT_GRADUATE.value}}, inplace=True)
-#print(loanDataset.head())
-#print(loanDataset['Education'].value_counts())
+# print(loanDataset.head())
+# print(loanDataset['Education'].value_counts())
+
 
 class Married(IntEnum):
     SINGLE = 0
     MARRIED = 1
-loanDataset.replace({"Married": {'No': Married.SINGLE.value, 'Yes': Married.SINGLE.value}}, inplace=True)
-#print(loanDataset.head())
-#print(loanDataset['Married'].value_counts())
+loanDataset.replace({"Married": {'No': Married.SINGLE.value, 'Yes': Married.MARRIED.value}}, inplace=True)
+# print(loanDataset.head())
+# print(loanDataset['Married'].value_counts())
+
 
 class SelfEmployed(IntEnum):
     SELF_EMPLOYED = 0
     NOT_SELF_EMPLOYED = 1
-loanDataset.replace({'Self_Employed': {'No': SelfEmployed.SELF_EMPLOYED.value, 'Yes': SelfEmployed.SELF_EMPLOYED.value}}, inplace=True)
-#print(loanDataset.head())
-#print(loanDataset['Self_Employed'].value_counts())
+loanDataset.replace({'Self_Employed': {'No': SelfEmployed.NOT_SELF_EMPLOYED.value,
+         'Yes': SelfEmployed.SELF_EMPLOYED.value}}, inplace=True)
+# print(loanDataset.head())
+# print(loanDataset['Self_Employed'].value_counts())
 
 print("Training SVM, please wait")
-trainingData = loanDataset.drop(columns=['Loan_ID', 'Loan_Status'], axis=1) #axis equal 1 removes the entire column
+trainingData = loanDataset.drop(columns=['Loan_ID', 'Loan_Status'], axis=1) # axis equal 1 removes the entire column
 inferenceData = loanDataset['Loan_Status'] 
-#print(trainingData.values)
-#print(inferenceData.values)
+# print(trainingData.values)
+# print(inferenceData.values)
 classifier = svm.SVC(kernel='linear')
 
 classifier.fit(trainingData.values, inferenceData.values) # train the model
@@ -112,7 +126,7 @@ while True:
     print("10. Credit score (1.0 - 0.0)?")
     qn_creditHistory = float(input('Answer: '))
 
-    print("11. Where does the applicant leave? \n\t {} {} \n\t {} {} \n\t {} {}".format(PropertyArea.URBAN.value, 'Urban', PropertyArea.SEMI_URBAN.value, 'Semi Urban',
+    print("11. Where does the applicant live? \n\t {} {} \n\t {} {} \n\t {} {}".format(PropertyArea.URBAN.value, 'Urban', PropertyArea.SEMI_URBAN.value, 'Semi Urban',
         PropertyArea.RURAL.value, 'Rural'))
     qn_propertyArea = int(input('Answer: '))
 
@@ -121,8 +135,16 @@ while True:
     prediction = classifier.predict([inputData])
     if(prediction[0] == LoanStatus.ACCEPTED.value):
         print('Customer is eligible to take this loan')
-        
-
+        KeyPressed = input('q and enter to quit, enter to continue ')
+        if KeyPressed == 'q':
+            quit()
+            
     else:
         print('Sorry, customer is not eligible to take this loan')
+        print('Press q to quit')
+        KeyPressed = input('q and enter to quit, enter to continue ')
+        if KeyPressed == 'q':
+            quit()
+           
+     
     input()
